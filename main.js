@@ -38,8 +38,9 @@ app.post('/uploadfile', upload.single('imageFile'), (req, res, next) => {
   const file = req.file
   if (!file) {
     const error = new Error('Please upload a file')
-    error.httpStatusCode = 400
-    return next(error)
+    return res.status(400).send({
+      message: 'Something went wrong'
+    });
   }
 
   const filename = file.path + '.jpg';
@@ -53,7 +54,7 @@ app.post('/uploadfile', upload.single('imageFile'), (req, res, next) => {
         .color([{ apply: 'lighten', params: [3] }])
         .write(filename);
 
-      res.send({
+      return res.send({
         success: true,
         file: filename
       });
@@ -61,6 +62,9 @@ app.post('/uploadfile', upload.single('imageFile'), (req, res, next) => {
     })
     .catch(err => {
       console.log(err);
+      return res.status(400).send({
+        message: 'Something went wrong'
+      });
     })
 });
 
