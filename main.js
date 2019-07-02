@@ -29,6 +29,11 @@ const storage = multer.diskStorage({
 const upload = multer({ storage: storage })
 
 
+app.get('/ping', (req, res) => {
+  res.send("Ping Successful");
+});
+
+
 app.post('/uploadfile', upload.single('imageFile'), (req, res, next) => {
   const file = req.file
   if (!file) {
