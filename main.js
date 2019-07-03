@@ -19,6 +19,7 @@ const upload = multer({ storage: storage })
 
 
 app.post('/uploadfile', upload.single('imageFile'), (req, res, next) => {
+  console.log("File Uploaded");
   const file = req.file
   if (!file) {
     const error = new Error('Please upload a file')
