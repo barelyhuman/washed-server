@@ -19,7 +19,6 @@ const upload = multer({ storage: storage })
 
 
 app.post('/uploadfile', upload.single('imageFile'), (req, res, next) => {
-  console.log("File Uploaded");
   const file = req.file
   if (!file) {
     const error = new Error('Please upload a file')
@@ -34,7 +33,6 @@ app.post('/uploadfile', upload.single('imageFile'), (req, res, next) => {
       fileInstance
         .brightness(0.18)
         .contrast(-0.18)
-        .color([{ apply: 'lighten', params: [3] }])
         .getBase64(Jimp.MIME_JPEG, (err, dataString) => {
 
           if (err) {
