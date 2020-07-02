@@ -32,7 +32,7 @@ app.post('/uploadfile', upload.single('imageFile'), (req, res, next) => {
 
       fileInstance
         .brightness(0.18)
-        .contrast(-0.10)
+        .contrast(-0.05)
         .getBase64(Jimp.MIME_JPEG, (err, dataString) => {
 
           if (err) {
