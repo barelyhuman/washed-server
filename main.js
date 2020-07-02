@@ -31,8 +31,9 @@ app.post('/uploadfile', upload.single('imageFile'), (req, res, next) => {
     .then(fileInstance => {
 
       fileInstance
-        .brightness(0.17)
-        .contrast(-0.05)
+        .brightness(0.25)
+        .contrast(-0.25)
+        .color([{ apply: 'mix', params:['black',0] }])
         .getBase64(Jimp.MIME_JPEG, (err, dataString) => {
 
           if (err) {

@@ -4,6 +4,7 @@
   "main": "main.js",
   "license": "MIT",
   "scripts": {
+    "dev": "nodemon main.js",
     "start": "node main.js"
   },
   "dependencies": {
@@ -13,5 +14,8 @@
     "jimp": "^0.6.4",
     "mkdirp": "^0.5.1",
     "multer": "^1.4.1"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.4"
   }
 }
