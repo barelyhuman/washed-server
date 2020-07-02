@@ -34,7 +34,7 @@ module.exports = async (req, res) => {
       })
     }
 
-    const fileName = Date.now()+'.jpg'
+    const fileName = Date.now() + '.jpg'
 
     await fs.writeFile(path.join(FILE_PATH, fileName), file.buffer)
 
@@ -49,14 +49,13 @@ module.exports = async (req, res) => {
 
     const noExtension = fileName.replace('.jpg', '')
 
-    const washedFilePath = path.join(FILE_PATH,`${noExtension}-washed.jpg`);
+    const washedFilePath = path.join(FILE_PATH, `${noExtension}-washed.jpg`)
 
     fileInstance
       .brightness(0.25)
       .contrast(-0.25)
       .color([{ apply: 'mix', params: ['black', 25] }])
-      .write(washedFilePath);
-
+      .write(washedFilePath)
   } catch (err) {
     console.error(err)
     throw err
