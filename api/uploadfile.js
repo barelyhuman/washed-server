@@ -51,13 +51,15 @@ module.exports = async (req, res) => {
 
     const washedFilePath = path.join(FILE_PATH, `${noExtension}-washed.jpg`)
 
+    await fs.writeFile(path.join(process.cwd(), `${noExtension}.lock`), String(noExtension))
+
     await fileInstance
       .brightness(0.25)
       .contrast(-0.25)
       .color([{ apply: 'mix', params: ['black', 25] }])
-      .write(washedFilePath);
+      .write(washedFilePath)
 
-      
+    await fs.unlink(path.join(process.cwd(), `${noExtension}.lock`))
   } catch (err) {
     console.error(err)
     throw err

@@ -5,10 +5,9 @@ const fs = require('fs').promises
 const runMiddleware = require('../lib/run-middleware')
 
 const FILE_PATH = require('../lib/file-path')
-const { EEXIST } = require('constants')
 
 module.exports = async (req, res) => {
-  let _filename
+  let _filename;
   try {
     if (req.method !== 'GET') {
       res.status(404)
@@ -19,28 +18,33 @@ module.exports = async (req, res) => {
 
     const { filename } = req.query
     _filename = filename
+
     const noExtension = filename.replace('.jpg', '')
-    const washedFile = noExtension + '-washed.jpg'
-    const washedFilePath = path.join(FILE_PATH, washedFile)
-    const stat = await fs.stat(washedFilePath)
-    const fileBuffer = await fs.readFile(washedFilePath)
+    const lockStat =await fs.stat(path.join(process.cwd(), `${noExtension}.lock`));
 
-    const dataString = Buffer.from(fileBuffer).toString('base64')
-    const dataURL = `data:image/jpg;base64,${dataString}`
-
-    if (stat) {
+    if (lockStat) {
       res.send({
-        fileName: _filename,
-        dataURL,
-        status: 1
-      })
-    }
-  } catch (err) {
-    if (err.code === 'ENOENT') {
-      return res.send({
         fileName: _filename,
         status: 0
       })
+    }
+
+  } catch (err) {
+    if (err.code === 'ENOENT') {
+      const noExtension = _filename.replace('.jpg', '')
+      const washedFile = noExtension + '-washed.jpg'
+      const washedFilePath = path.join(FILE_PATH, washedFile)
+      const fileBuffer = await fs.readFile(washedFilePath)
+
+      const dataString = Buffer.from(fileBuffer).toString('base64')
+      const dataURL = `data:image/jpg;base64,${dataString}`;
+
+
+      return res.send({
+        fileName: _filename,
+        dataURL,
+        status: 1
+      });
     }
     res.status(500)
     res.send({
